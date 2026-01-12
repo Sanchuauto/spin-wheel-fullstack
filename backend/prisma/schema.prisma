@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  CAMPAIGN_MANAGER
+  ANALYST
+}
+
+model AdminUser {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  role      Role
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Campaign {
+  id               String    @id @default(uuid())
+  name             String
+  brandLogoUrl     String?
+  isActive         Boolean   @default(true)
+  startDate        DateTime
+  endDate          DateTime
+  maxSpinsPerPhone Int
+  shareableSlug    String    @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  offers           Offer[]
+  spinLogs         SpinLog[]
+}
+
+model Offer {
+  id                 String    @id @default(uuid())
+  campaignId         String
+  campaign           Campaign  @relation(fields: [campaignId], references: [id])
+  offerName          String
+  offerDescription   String?
+  couponCode         String
+  weight             Int
+  maxRedemptionLimit Int
+  redemptionCount    Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  spinLogs           SpinLog[]
+}
+
+model SpinLog {
+  id                 String   @id @default(uuid())
+  campaignId         String
+  campaign           Campaign @relation(fields: [campaignId], references: [id])
+  phone              String
+  offerId            String
+  offer              Offer    @relation(fields: [offerId], references: [id])
+  offerNameSnapshot  String
+  couponCodeSnapshot String
+  ipAddress          String?
+  userAgent          String?
+  createdAt          DateTime @default(now())
+
+  @@index([campaignId, phone])
+  @@index([createdAt])
+  @@index([phone])
+}
