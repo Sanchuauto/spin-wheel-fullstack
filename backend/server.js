@@ -14,12 +14,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // CORS Configuration
 const allowedOrigins = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://spin-wheel-fullstack.web.app',
-    'https://spin-wheel-fullstack.firebaseapp.com'
-    'https://spin.sanchu.in'
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://spin-wheel-fullstack.web.app',
+  'https://spin-wheel-fullstack.firebaseapp.com',
+  'https://spin.sanchu.in'
 ];
+
+
 
 app.use(cors({
     origin: (origin, callback) => {
