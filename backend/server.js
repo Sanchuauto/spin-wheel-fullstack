@@ -18,6 +18,7 @@ const allowedOrigins = [
     'http://127.0.0.1:5173',
     'https://spin-wheel-fullstack.web.app',
     'https://spin-wheel-fullstack.firebaseapp.com'
+    'https://spin.sanchu.in'
 ];
 
 app.use(cors({
