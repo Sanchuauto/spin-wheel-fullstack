@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import api from '../utils/api';
 
 const AuthContext = createContext();
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const { data } = await api.get('/admin/auth/me');
+                    const { data } = await api.get(`${API_URL}/api/admin/me`);
                     setUser({ ...data, token });
                 } catch (error) {
                     console.error("Auth check failed", error);
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        const { data } = await api.post(`${import.meta.env.VITE_API_URL}/api/admin/auth/login`, { username, password });
+        const { data } = await api.post(`${API_URL}/api/admin/auth/login`, { username, password });
         localStorage.setItem('token', data.token);
         setUser(data);
         return data;
