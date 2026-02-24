@@ -4,10 +4,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
+const { PrismaClient } = require('@prisma/client');
 
 dotenv.config();
 
 const app = express();
+const prisma = new PrismaClient();
 
 // Middleware
 app.use(express.json());
@@ -61,6 +63,15 @@ app.use('/api/admin/campaigns', campaignRoutes);
 app.use('/api/admin/offers', offerRoutes);
 app.use('/api/admin', reportRoutes); // Mounted at /api/admin for /spins and /analytics
 app.use('/api/public', publicRoutes);
+
+app.get('/api/debug-admin', async (req, res) => {
+  try {
+    const users = await prisma.adminUser.findMany();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // Error Handling
 app.use((err, req, res, next) => {
