@@ -20,7 +20,13 @@ const loginAdmin = async (req, res) => {
             where: { username },
         });
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+        const storedHash = user ? user.password : null;
+        console.log('Entered password:', password);
+        console.log('Stored hash:', storedHash);
+        const isMatch = user ? await bcrypt.compare(password, user.password) : false;
+        console.log('isMatch:', isMatch);
+
+        if (user && isMatch) {
             if (!user.isActive) {
                 return res.status(401).json({ message: 'User is inactive' });
             }
