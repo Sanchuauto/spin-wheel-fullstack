@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        const { data } = await api.post('/api/admin/auth/login', { username, password });
+        const { data } = await api.post(`${import.meta.env.VITE_API_URL}/api/admin/auth/login`, { username, password });
         localStorage.setItem('token', data.token);
         setUser(data);
         return data;
