@@ -17,9 +17,9 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'https://spin-wheel-fullstack.web.app',
-    'https://spin-wheel-fullstack.firebaseapp.com'
+    'https://spin-wheel-fullstack.firebaseapp.com',
+    'https://spin.sanchu.in'
 ];
-
 
 
 app.use(cors({
@@ -74,6 +74,10 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
