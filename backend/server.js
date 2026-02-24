@@ -45,7 +45,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Routes Imports
-const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const campaignRoutes = require('./routes/campaignRoutes');
 const offerRoutes = require('./routes/offerRoutes');
@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 });
 
 // Mount Routes
-app.use('/api/admin/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/admin/users', userRoutes);
 app.use('/api/admin/campaigns', campaignRoutes);
 app.use('/api/admin/offers', offerRoutes);
